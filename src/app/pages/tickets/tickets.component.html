@@ -1,0 +1,378 @@
+<!-- Tickets Page - Main Layout -->
+<div class="flex h-full bg-gray-50 ticket-layout">
+  
+  <!-- Left Sidebar - Views (w-80) -->
+  <div class="w-80 bg-white border-r border-gray-200 flex flex-col hidden md:flex">
+    <!-- Header Section -->
+    <div class="p-4 border-b border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-lg font-semibold text-gray-900">{{ getCurrentFilterLabel() }}</h2>
+        <button class="p-1 text-gray-400 hover:text-gray-600" 
+                aria-label="Refresh tickets">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Views Section -->
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-sm font-medium text-gray-700">Views</h3>
+          <button class="text-purple-600 hover:text-purple-700 text-sm font-medium"
+                  (click)="onCreateTicket()">
+            Create
+          </button>
+        </div>
+
+        <!-- Saved Tickets -->
+        <div class="mb-3">
+          <div class="flex items-center text-sm text-gray-700 py-2 px-2 hover:bg-gray-50 rounded cursor-pointer">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+            </svg>
+            Saved Tickets
+          </div>
+        </div>
+
+        <!-- All Views -->
+        <div class="mb-3">
+          <button (click)="toggleAllViews()" 
+                  class="flex items-center justify-between w-full mb-2 text-left">
+            <span class="text-sm font-medium text-gray-700">All Views</span>
+            <svg class="w-4 h-4 text-gray-400 transition-transform" 
+                 [class.rotate-180]="!showAllViews"
+                 fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <!-- Collapsible Views Content -->
+          <div *ngIf="showAllViews">
+            <!-- Search Views -->
+            <div class="mb-2">
+              <div class="relative">
+                <input type="text" 
+                       placeholder="Search"
+                       class="w-full pl-8 pr-3 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-500 focus:border-purple-500">
+                <svg class="w-4 h-4 text-gray-400 absolute left-2 top-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                </svg>
+                <svg class="w-4 h-4 text-gray-400 absolute right-2 top-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
+                </svg>
+              </div>
+            </div>
+
+            <!-- View List -->
+            <div class="space-y-1">
+              <div *ngFor="let view of views"
+                   (click)="selectView(view)"
+                   class="flex items-center justify-between text-sm py-1 px-2 rounded cursor-pointer transition-colors"
+                   [class.bg-purple-100]="view.name === 'All Pending Tickets'"
+                   [class.text-purple-700]="view.name === 'All Pending Tickets'"
+                   [class.text-gray-700]="view.name !== 'All Pending Tickets'"
+                   [class.hover:bg-gray-50]="view.name !== 'All Pending Tickets'">
+                <span>{{ view.name }}</span>
+                <span class="text-gray-400">{{ view.count }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="space-y-1 pt-3 border-t border-gray-200">
+          <!-- Suspended Emails -->
+          <div class="flex items-center justify-between text-sm text-gray-700 py-1 px-2 hover:bg-gray-50 rounded cursor-pointer">
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              Suspended Emails
+            </div>
+            <span class="text-gray-400">0</span>
+          </div>
+
+          <!-- Spam Tickets -->
+          <div class="flex items-center justify-between text-sm text-gray-700 py-1 px-2 hover:bg-gray-50 rounded cursor-pointer">
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636m12.728 12.728L18.364 5.636M5.636 18.364l12.728-12.728"/>
+              </svg>
+              Spam Tickets
+            </div>
+            <span class="text-gray-400">0</span>
+          </div>
+
+          <!-- Deleted Tickets -->
+          <div class="flex items-center justify-between text-sm text-gray-700 py-1 px-2 hover:bg-gray-50 rounded cursor-pointer">
+            <div class="flex items-center">
+              <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Deleted Tickets
+            </div>
+            <span class="text-gray-400">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Left Sidebar -->
+
+  <!-- Middle Section - Ticket List (flex-1) -->
+  <div class="flex-1 flex flex-col">
+    <div class="ticket-list-container">
+      <!-- Ticket List Header -->
+      <div class="ticket-list-header">
+        <div class="ticket-controls">
+          <div class="ticket-controls-left">
+            <select class="control-select">
+              <option>All Brands</option>
+            </select>
+            <div class="relative">
+              <input type="text" 
+                     [(ngModel)]="searchQuery"
+                     (keyup.enter)="onSearch()"
+                     placeholder="Search by Title or ID" 
+                     class="search-input-small">
+              <svg class="search-icon-small" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="ticket-controls-right">
+            <button class="control-select">Export</button>
+            <select [(ngModel)]="currentSort" 
+                    (change)="onSortChange(currentSort)"
+                    class="control-select">
+              <option>Created - Desc</option>
+              <option>Modified - Desc</option>
+              <option>Priority - High to Low</option>
+              <option>Status - A to Z</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ticket Table -->
+      <div class="overflow-x-auto">
+        <table class="ticket-table">
+          <thead>
+            <tr>
+              <th style="width: 40px;">
+                <input type="checkbox" class="rounded border-gray-300">
+              </th>
+              <th style="width: 200px;">Requester</th>
+              <th>Ticket Title</th>
+              <th style="width: 100px;">Status</th>
+              <th style="width: 100px;">Priority</th>
+              <th style="width: 120px;">Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ticket of filteredTickets; trackBy: trackByTicketId" 
+                (click)="selectTicket(ticket)"
+                class="ticket-row"
+                [class.selected]="selectedTicket?.id === ticket.id">
+              <td>
+                <input type="checkbox" class="rounded border-gray-300" (click)="$event.stopPropagation()">
+              </td>
+              <td>
+                <div class="requester-info">
+                  <div class="requester-avatar"
+                       [style.background]="'linear-gradient(135deg, #' + ticket.requester.initials.charCodeAt(0).toString(16) + ticket.requester.initials.charCodeAt(1).toString(16) + '00, #' + ticket.requester.initials.charCodeAt(1).toString(16) + ticket.requester.initials.charCodeAt(0).toString(16) + '00)'">
+                    {{ ticket.requester.initials }}
+                  </div>
+                  <div class="requester-details">
+                    <div class="requester-name">{{ ticket.requester.name }}</div>
+                    <div class="requester-email">{{ ticket.requester.email }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="ticket-title" [title]="ticket.title">{{ ticket.title }}</div>
+              </td>
+              <td>
+                <span class="status-badge" 
+                      [class.status-open]="ticket.status === 'Open'"
+                      [class.status-pending]="ticket.status === 'Pending'"
+                      [class.status-resolved]="ticket.status === 'Resolved'"
+                      [class.status-closed]="ticket.status === 'Closed'">
+                  {{ ticket.status }}
+                </span>
+              </td>
+              <td>
+                <span class="priority-badge"
+                      [class.priority-urgent]="ticket.priority === 'Urgent'"
+                      [class.priority-high]="ticket.priority === 'High'"
+                      [class.priority-normal]="ticket.priority === 'Normal'"
+                      [class.priority-low]="ticket.priority === 'Low'">
+                  {{ ticket.priority }}
+                </span>
+              </td>
+              <td>
+                <div class="created-time">{{ getTimeAgo(ticket.createdAt) }}</div>
+              </td>
+            </tr>
+            <!-- Empty State -->
+            <tr *ngIf="filteredTickets.length === 0">
+              <td colspan="6" class="text-center py-8">
+                <div class="empty-state">
+                  <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                  </svg>
+                  <div class="empty-state-title">No tickets found</div>
+                  <div class="empty-state-description">
+                    <span *ngIf="searchQuery">Try adjusting your search terms</span>
+                    <span *ngIf="!searchQuery">Create your first ticket to get started</span>
+                  </div>
+    <button *ngIf="!searchQuery" 
+        (click)="onCreateTicket()"
+        class="px-8 py-3 mt-6 rounded-lg bg-gray-100 text-gray-900 font-semibold shadow hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-1 transition-all duration-200">
+  + Create Ticket
+</button>
+
+
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+     <div class="flex items-center justify-between mt-6 pt-4 border-t border-gray-200 px-6 pb-4 bg-white dark:bg-gray-900 rounded-md shadow-sm">
+  <!-- Previous Button -->
+  <button 
+    class="flex items-center text-lg font-semibold text-black hover:text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+    [disabled]="currentPage === 1"
+    (click)="goToPreviousPage()">
+    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+    Previous
+  </button>
+
+  <!-- Page Info -->
+  <div class="flex items-center space-x-2">
+    <span class="text-lg text-gray-700 dark:text-gray-300">
+      Page {{ currentPage }} of {{ totalPages }}
+    </span>
+  </div>
+
+  <!-- Next Button -->
+  <button 
+    class="flex items-center text-lg font-semibold text-black hover:text-gray-800 px-4 py-2 rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+    [disabled]="currentPage === totalPages"
+    (click)="goToNextPage()">
+    Next
+    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    </svg>
+  </button>
+</div>
+
+  <!-- End Middle Section -->
+
+  <!-- Right Section - Ticket Properties (w-80) -->
+  <div class="w-80 ticket-details-panel hidden md:block" *ngIf="selectedTicket">
+    <!-- Requester Details Section -->
+    <div class="panel-section">
+      <div class="section-title">Requester Details</div>
+      <div class="section-content">
+        <div class="requester-info mb-4">
+          <div class="requester-avatar"
+               [style.background]="'linear-gradient(135deg, #' + selectedTicket.requester.initials.charCodeAt(0).toString(16) + selectedTicket.requester.initials.charCodeAt(1).toString(16) + '00, #' + selectedTicket.requester.initials.charCodeAt(1).toString(16) + selectedTicket.requester.initials.charCodeAt(0).toString(16) + '00)'">
+            {{ selectedTicket.requester.initials }}
+          </div>
+          <div class="requester-details">
+            <div class="requester-name">{{ selectedTicket.requester.name }}</div>
+            <div class="requester-email">{{ selectedTicket.requester.email }}</div>
+          </div>
+        </div>
+
+        <div class="contact-grid">
+          <div class="field-group">
+            <label class="field-label">Contact Group</label>
+            <div class="field-value">--</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Phone Number</label>
+            <div class="field-value">--</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Mobile Number</label>
+            <div class="field-value">--</div>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Time Zone</label>
+            <div class="field-value">--</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ticket Properties Section -->
+    <div class="panel-section">
+      <div class="section-title">Ticket Properties</div>
+      <div class="section-content">
+        <div class="field-group">
+          <label class="field-label">Status</label>
+          <select class="field-input">
+            <option value="">Select Status</option>
+            <option value="open">Open</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+            <option value="closed">Closed</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Assignee</label>
+          <select class="field-input">
+            <option value="">Select Assignee</option>
+            <option value="likitha">Likitha</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Resolution Due</label>
+          <input type="date" class="field-input" placeholder="Select date">
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Tags</label>
+          <input type="text" class="field-input" placeholder="Add tags">
+          <div class="field-hint">Separate multiple tags with commas</div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">Visibility</label>
+          <select class="field-input">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="internal">Internal</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Right Section -->
+
+</div>
+<!-- End Tickets Page Main Layout -->
+
+<!-- Ticket Creation Modal -->
+<app-ticket-create *ngIf="showCreateTicket"
+                   (ticketCreated)="onTicketCreated($event)"
+                   (cancelled)="onCreateTicketCancelled()">
+</app-ticket-create>
+
+<!-- Ticket Detail Modal -->
+<app-ticket-detail *ngIf="showTicketDetail && selectedTicketId"
+                   [ticketId]="selectedTicketId"
+                   (closed)="onTicketDetailClosed()">
+</app-ticket-detail>

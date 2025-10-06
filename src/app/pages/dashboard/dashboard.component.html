@@ -1,0 +1,170 @@
+<div class="p-6 max-w-7xl mx-auto">
+  <!-- Header -->
+  <div class="mb-8">
+    <h1 class="text-2xl font-semibold text-gray-900 dark:text-white">My Dashboard</h1>
+  </div>
+
+ <div class="mb-8">
+  <!-- Tabs as radio buttons -->
+  
+
+
+
+  <!-- Assigned Tickets Section -->
+  <div class="mb-8">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Assigned Tickets</h2>
+    
+    <!-- Stats Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+        <div class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">Pending</div>
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.pending }}</div>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+        <div class="text-sm font-medium text-gray-600 dark:text-gray-400 mb-2">On Hold</div>
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.onHold }}</div>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+        <div class="flex items-center mb-2">
+          <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Resolution Due</div>
+          <svg class="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.resolutionDue }}</div>
+      </div>
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
+        <div class="flex items-center mb-2">
+          <div class="text-sm font-medium text-gray-600 dark:text-gray-400">Response Due</div>
+          <svg class="w-4 h-4 ml-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="text-3xl font-bold text-gray-900 dark:text-white">{{ stats.responseDue }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tickets Table Section -->
+  <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-md">
+   
+ 
+    <!-- Table Filters -->
+    <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+ 
+  <!-- Tabs -->
+  <div class="p-6 bg-gray-50 dark:bg-gray-900 min-h-screen">
+  <!-- Tabs -->
+  
+  <div class="flex space-x-4 mb-6">
+    <button class="tab-button px-4 py-2 rounded-md bg-blue-600 text-white font-medium"
+            data-tab="tickets">
+      My Tickets
+    </button>
+    <button class="tab-button px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white font-medium"
+            data-tab="groups">
+      My Groups
+    </button>
+    <button class="tab-button px-4 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white font-medium"
+            data-tab="agent">
+      Agent
+    </button>
+  </div>
+
+  <!-- Tab Content -->
+  <div>
+    <!-- My Tickets Table -->
+    <div id="tickets" class="tab-content">
+      <div class="overflow-x-auto rounded-lg shadow-lg">
+        <table class="w-full text-sm text-left text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700">
+          <thead class="bg-gray-200 dark:bg-gray-800">
+            <tr>
+              <th class="py-4 px-6 text-lg font-bold text-gray-900 dark:text-white">Ticket ID</th>
+              <th class="py-4 px-6 text-lg font-bold text-gray-900 dark:text-white">Subject</th>
+              <th class="py-4 px-6 text-lg font-bold text-gray-900 dark:text-white">Created On</th>
+              <th class="py-4 px-6 text-lg font-bold text-gray-900 dark:text-white">Status</th>
+              <th class="py-4 px-6 text-lg font-bold text-gray-900 dark:text-white">Brand</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-900">
+            <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="py-4 px-6 font-medium text-blue-600 dark:text-blue-400">101</td>
+              <td class="py-4 px-6 text-gray-900 dark:text-white">Login Issue on Portal</td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Oct 01, 2025 08:15 AM</td>
+              <td class="py-4 px-6">
+                <span class="px-3 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-sm font-medium">
+                  Resolved
+                </span>
+              </td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Corporate</td>
+            </tr>
+            <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="py-4 px-6 font-medium text-blue-600 dark:text-blue-400">102</td>
+              <td class="py-4 px-6 text-gray-900 dark:text-white">Payment Gateway Error</td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Oct 02, 2025 10:30 AM</td>
+              <td class="py-4 px-6">
+                <span class="px-3 py-1 bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 rounded-full text-sm font-medium">
+                  Pending
+                </span>
+              </td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Individual</td>
+            </tr>
+            <tr class="border-b border-gray-100 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="py-4 px-6 font-medium text-blue-600 dark:text-blue-400">103</td>
+              <td class="py-4 px-6 text-gray-900 dark:text-white">Account Verification Needed</td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Oct 03, 2025 02:45 PM</td>
+              <td class="py-4 px-6">
+                <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 rounded-full text-sm font-medium">
+                  Open
+                </span>
+              </td>
+              <td class="py-4 px-6 text-gray-600 dark:text-gray-400">Enterprise</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- My Groups -->
+    <div id="groups" class="tab-content hidden">
+      <!-- Empty page if no groups -->
+      <div class="flex items-center justify-center h-48 text-gray-500 dark:text-gray-400 text-lg">
+        No groups available.
+      </div>
+    </div>
+
+    <!-- Agent -->
+    <div id="agent" class="tab-content hidden">
+      <!-- Empty page -->
+      <div class="flex items-center justify-center h-48 text-gray-500 dark:text-gray-400 text-lg">
+        No agent data available.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabContents = document.querySelectorAll('.tab-content');
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.tab;
+
+      // Reset all buttons to inactive style
+      tabButtons.forEach(b => {
+        b.classList.remove('bg-blue-600', 'text-white');
+        b.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
+      });
+
+      // Set clicked button as active
+      btn.classList.add('bg-blue-600', 'text-white');
+      btn.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-900', 'dark:text-white');
+
+      // Show the correct tab content
+      tabContents.forEach(tc => tc.classList.add('hidden'));
+      document.getElementById(target).classList.remove('hidden');
+    });
+  });
+</script>

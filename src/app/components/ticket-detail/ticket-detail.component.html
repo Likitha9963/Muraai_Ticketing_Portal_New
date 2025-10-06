@@ -1,0 +1,300 @@
+<!-- Ticket Detail View -->
+<div class="ticket-detail-overlay" *ngIf="ticket">
+  <div class="ticket-detail-container">
+    
+    <!-- Header -->
+    <div class="detail-header">
+      <div class="header-content">
+        <div class="ticket-info">
+          <h1 class="ticket-title">{{ ticket.title }}</h1>
+          <div class="ticket-meta">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"/>
+            </svg>
+            <span>Customer Portal</span>
+            <span>•</span>
+            <span>{{ getTimeAgo(ticket.createdAt) }}</span>
+          </div>
+        </div>
+        <button class="close-button" (click)="onClose()" aria-label="Close ticket detail">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="detail-content">
+      
+      <!-- Left Section - Messages -->
+      <div class="messages-section">
+        
+        <!-- Tabs -->
+        <div class="tabs-container">
+          <nav class="tabs-nav">
+            <button *ngFor="let tab of tabs"
+                    (click)="setActiveTab(tab.id)"
+                    class="tab-button"
+                    [class.active]="activeTab === tab.id">
+              {{ tab.label }}
+              <span class="tab-count" *ngIf="tab.count > 0">({{ tab.count }})</span>
+            </button>
+          </nav>
+        </div>
+
+        <!-- Messages Content -->
+        <div class="tab-content" *ngIf="activeTab === 'messages'">
+          <div class="messages-list">
+            <div *ngFor="let message of ticket.messages; trackBy: trackByMessageId" 
+                 class="message-item">
+              <div class="message-header">
+                <div class="message-author">
+                  <div class="author-avatar"
+                       [style.background]="'linear-gradient(135deg, #' + message.author.initials.charCodeAt(0).toString(16) + message.author.initials.charCodeAt(1).toString(16) + '00, #' + message.author.initials.charCodeAt(1).toString(16) + message.author.initials.charCodeAt(0).toString(16) + '00)'">
+                    {{ message.author.initials }}
+                  </div>
+                  <div class="author-info">
+                    <div class="author-name">{{ message.author.name }}</div>
+                    <div class="message-meta">
+                      <span *ngIf="message.author.type === 'customer'">replied via Customer Portal</span>
+                      <span *ngIf="message.author.type === 'agent'">replied as Agent</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="message-time">
+                  {{ formatDate(message.createdAt) }} ({{ getTimeAgo(message.createdAt) }})
+                </div>
+              </div>
+              <div class="message-content">
+                {{ message.content }}
+              </div>
+              <div class="message-actions">
+                <button class="action-btn" title="Share">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"/>
+                  </svg>
+                </button>
+                <button class="action-btn" title="Edit">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reply Form -->
+          <div class="reply-section">
+            <div class="reply-header">
+              <h3>Reply to Ticket</h3>
+              <div class="reply-options">
+                <button class="option-btn">Internal Note</button>
+                <button class="option-btn">Forward</button>
+              </div>
+            </div>
+            
+            <div class="reply-form">
+              <textarea [(ngModel)]="replyContent"
+                        class="reply-textarea"
+                        placeholder="Type your reply here..."
+                        rows="4"
+                        [disabled]="isSubmittingReply">
+              </textarea>
+              
+              <div class="reply-actions">
+                <div class="reply-options-left">
+                  <label class="checkbox-container">
+                    <input type="checkbox" class="checkbox-input">
+                    <span class="checkbox-label">Internal note</span>
+                  </label>
+                  <label class="checkbox-container">
+                    <input type="checkbox" class="checkbox-input">
+                    <span class="checkbox-label">Close ticket</span>
+                  </label>
+                </div>
+                
+                <div class="reply-buttons">
+                  <button type="button" 
+                          class="btn-secondary"
+                          [disabled]="isSubmittingReply">
+                    Save as Draft
+                  </button>
+                  <button type="button" 
+                          class="btn-primary"
+                          (click)="onSubmitReply()"
+                          [disabled]="!replyContent.trim() || isSubmittingReply">
+                    <span *ngIf="isSubmittingReply">Sending...</span>
+                    <span *ngIf="!isSubmittingReply">Send Reply</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Other Tab Contents -->
+        <div class="tab-content" *ngIf="activeTab === 'links'">
+          <div class="empty-state">
+            <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+            </svg>
+            <p>No links available</p>
+          </div>
+        </div>
+
+        <div class="tab-content" *ngIf="activeTab === 'activities'">
+          <div class="activities-list">
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-content">
+                <p>Ticket created by {{ ticket.requester.name }}</p>
+                <span class="activity-time">{{ getTimeAgo(ticket.createdAt) }}</span>
+              </div>
+            </div>
+            <div class="activity-item" *ngFor="let message of ticket.messages">
+              <div class="activity-dot"></div>
+              <div class="activity-content">
+                <p>{{ message.author.name }} {{ message.author.type === 'customer' ? 'replied' : 'responded' }}</p>
+                <span class="activity-time">{{ getTimeAgo(message.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" *ngIf="activeTab === 'approvals'">
+          <div class="empty-state">
+            <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p>No approvals required</p>
+          </div>
+        </div>
+
+        <div class="tab-content" *ngIf="activeTab === 'worklog'">
+          <div class="empty-state">
+            <svg class="empty-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p>No work logged</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section - Ticket Properties -->
+      <div class="properties-section">
+        
+        <!-- Requester Details -->
+        <div class="property-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Requester Details</h3>
+          </div>
+          <div class="panel-content">
+            <div class="requester-info">
+              <div class="requester-avatar"
+                   [style.background]="'linear-gradient(135deg, #' + ticket.requester.initials.charCodeAt(0).toString(16) + ticket.requester.initials.charCodeAt(1).toString(16) + '00, #' + ticket.requester.initials.charCodeAt(1).toString(16) + ticket.requester.initials.charCodeAt(0).toString(16) + '00)'">
+                {{ ticket.requester.initials }}
+              </div>
+              <div class="requester-details">
+                <div class="requester-name">{{ ticket.requester.name }}</div>
+                <div class="requester-email">{{ ticket.requester.email }}</div>
+              </div>
+            </div>
+
+            <div class="contact-details">
+              <div class="detail-row">
+                <span class="detail-label">Contact Group</span>
+                <span class="detail-value">{{ ticket.requester.contactGroup || '--' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Phone Number</span>
+                <span class="detail-value">{{ ticket.requester.phoneNumber || '--' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Mobile Number</span>
+                <span class="detail-value">{{ ticket.requester.mobileNumber || '--' }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Time Zone</span>
+                <span class="detail-value">{{ ticket.requester.timeZone || '--' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket Properties -->
+        <div class="property-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Ticket Properties</h3>
+          </div>
+          <div class="panel-content">
+            <div class="property-field">
+              <label class="property-label">Status</label>
+              <select class="property-select" 
+                      [value]="ticket.status"
+                      (change)="onStatusChange($event)">
+                <option value="Open">Open</option>
+                <option value="Pending">Pending</option>
+                <option value="Resolved">Resolved</option>
+                <option value="Closed">Closed</option>
+              </select>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Priority</label>
+              <select class="property-select"
+                      [value]="ticket.priority"
+                      (change)="onPriorityChange($event)">
+                <option value="Low">Low</option>
+                <option value="Normal">Normal</option>
+                <option value="High">High</option>
+                <option value="Urgent">Urgent</option>
+              </select>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Assignee</label>
+              <div class="property-value">{{ ticket.assignee.name }}</div>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Type</label>
+              <div class="property-value">{{ ticket.type || '--' }}</div>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Category</label>
+              <div class="property-value">{{ ticket.category || '--' }}</div>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Tags</label>
+              <div class="property-value">
+                <span *ngIf="ticket.tags.length === 0">--</span>
+                <span *ngFor="let tag of ticket.tags; let last = last" class="tag">
+                  {{ tag }}<span *ngIf="!last">, </span>
+                </span>
+              </div>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Visibility</label>
+              <div class="property-value">{{ ticket.visibility }}</div>
+            </div>
+
+            <div class="property-field">
+              <label class="property-label">Created</label>
+              <div class="property-value">{{ formatDate(ticket.createdAt) }}</div>
+            </div>
+
+            <div class="property-field" *ngIf="ticket.resolutionDue">
+              <label class="property-label">Resolution Due</label>
+              <div class="property-value">{{ formatDate(ticket.resolutionDue) }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Ticket Detail View -->

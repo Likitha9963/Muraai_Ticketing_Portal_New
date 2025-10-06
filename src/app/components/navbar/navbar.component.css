@@ -1,0 +1,326 @@
+/* Modern Navbar Component Styles */
+
+/* Dark mode support */
+.dark .search-input {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+.dark .search-input::placeholder {
+  color: #9ca3af;
+}
+
+.dark .search-input:hover {
+  border-color: #4b5563;
+}
+
+.dark .search-input:focus {
+  border-color: #7c3aed;
+  background-color: #1f2937;
+}
+
+.dark .search-icon {
+  color: #9ca3af;
+}
+
+.dark .search-input:focus + .search-icon {
+  color: #7c3aed;
+}
+
+.dark .tickets-button {
+  background-color: #1f2937;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+.dark .tickets-button:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+}
+
+.dark .icon-button {
+  color: #9ca3af;
+}
+
+.dark .icon-button:hover {
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.dark .user-avatar {
+  background: linear-gradient(135deg, #ec4899 0%, #7c3aed 100%);
+}
+
+/* Search Input Container */
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #374151;
+  background-color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.search-input::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+}
+
+.search-input:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: #6b7280;
+  pointer-events: none;
+  transition: color 0.2s ease;
+}
+
+.search-input:focus + .search-icon {
+  color: #7c3aed;
+}
+
+/* Tickets Button Styles */
+.tickets-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.tickets-button:hover {
+  border-color: #7c3aed;
+  color: #7c3aed;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transform: translateY(-1px);
+}
+
+.tickets-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.tickets-button:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Create Button Styles */
+.create-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 2px 4px 0 rgba(124, 58, 237, 0.2);
+}
+
+.create-button:hover {
+  background: linear-gradient(135deg, #6d28d9 0%, #7c3aed 100%);
+  box-shadow: 0 4px 8px 0 rgba(124, 58, 237, 0.3);
+  transform: translateY(-1px);
+}
+
+.create-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px 0 rgba(124, 58, 237, 0.2);
+}
+
+.create-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.3);
+}
+
+/* Icon Buttons */
+.icon-button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.icon-button:hover {
+  background-color: #f3f4f6;
+  color: #374151;
+}
+
+.icon-button:focus {
+  outline: none;
+  background-color: #f3f4f6;
+  box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+}
+
+/* Notification Badge */
+.notification-badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+}
+
+/* User Avatar */
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #ec4899 0%, #7c3aed 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.2);
+}
+
+.user-avatar:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(124, 58, 237, 0.3);
+}
+
+/* Dropdown Animations */
+.dropdown-menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px) scale(0.95);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .search-container {
+    max-width: 200px;
+  }
+  
+  .search-input {
+    padding: 10px 14px 10px 40px;
+    font-size: 13px;
+  }
+  
+  .search-icon {
+    left: 12px;
+    width: 16px;
+    height: 16px;
+  }
+  
+  .create-button {
+    padding: 8px 16px;
+    font-size: 13px;
+  }
+  
+  .icon-button {
+    padding: 8px;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    max-width: 160px;
+  }
+  
+  .search-input {
+    padding: 8px 12px 8px 36px;
+    font-size: 12px;
+  }
+  
+  .create-button span {
+    display: none;
+  }
+  
+  .create-button {
+    padding: 8px;
+    min-width: 36px;
+  }
+}
+
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+  .search-input,
+  .create-button,
+  .icon-button,
+  .user-avatar,
+  .dropdown-menu {
+    transition: none;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .search-input {
+    border-width: 3px;
+  }
+  
+  .search-input:focus {
+    border-color: #000000;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
+  }
+}

@@ -1,0 +1,173 @@
+<!-- Enhanced Ticket Creation Form -->
+<div class="ticket-create-overlay">
+  <div class="ticket-create-modal">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2 class="modal-title">Create Ticket</h2>
+      <div class="header-actions">
+        <div class="search-container">
+          <input type="text" placeholder="Search" class="header-search">
+          <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <button type="button" class="close-button" (click)="onCancel()" aria-label="Close">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Form Content -->
+    <div class="modal-body">
+      <form [formGroup]="ticketForm" (ngSubmit)="onSubmit()" class="ticket-form">
+
+        <!-- Template Selection -->
+        <div class="form-row">
+          <div class="template-section">
+            <select class="template-select">
+              <option>Choose a Template</option>
+              <option>Bug Report</option>
+              <option>Feature Request</option>
+              <option>General Inquiry</option>
+              <option>Technical Support</option>
+            </select>
+            <svg class="template-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Brand Selection -->
+        <div class="form-row">
+          <label class="form-label required">Brand <span class="required-star">*</span></label>
+          <select formControlName="brand" class="form-select" [class.error]="isFieldInvalid('brand')">
+            <option *ngFor="let brand of brands" [value]="brand">{{ brand }}</option>
+          </select>
+          <div *ngIf="isFieldInvalid('brand')" class="error-message">
+            Brand is required
+          </div>
+        </div>
+
+        <!-- Private Ticket Checkbox -->
+        <div class="form-row">
+          <label class="checkbox-container">
+            <input type="checkbox" formControlName="isPrivate" class="checkbox-input">
+            <span class="checkbox-checkmark"></span>
+            <span class="checkbox-label">Make this ticket private</span>
+            <svg class="info-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+          </label>
+        </div>
+
+        <!-- Requester Section -->
+        <div class="form-row">
+          <label class="form-label required">
+            Requester <span class="required-star">*</span>
+          </label>
+
+          <div class="requester-section">
+            <select formControlName="requester" class="form-select" [class.error]="isFieldInvalid('requester')">
+              <option value="">Select Requester</option>
+              <option *ngFor="let requester of requesters" [value]="requester.email">
+                {{ requester.name }} ({{ requester.email }})
+              </option>
+            </select>
+
+            <div class="requester-actions flex gap-2 mt-2">
+              <button type="button" class="action-link" (click)="addMe()">Add Me</button>
+              <button type="button" class="action-link" (click)="addNewContact()">Add New Contact</button>
+            </div>
+          </div>
+
+          <div *ngIf="isFieldInvalid('requester')" class="error-message">
+            Requester is required
+          </div>
+
+          <div class="cc-section mt-3">
+            <button type="button" class="cc-button" (click)="addCC()">Add CC</button>
+          </div>
+        </div>
+
+        <!-- Modal for adding new contact -->
+        <div *ngIf="showNewContactModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 w-96">
+            <h3 class="text-lg font-bold mb-4">Add New Contact</h3>
+            <form [formGroup]="newContactForm" (ngSubmit)="saveNewContact()">
+              <div class="mb-3">
+                <label>Name</label>
+                <input formControlName="name" type="text" class="form-input w-full" />
+              </div>
+              <div class="mb-3">
+                <label>Email</label>
+                <input formControlName="email" type="email" class="form-input w-full" />
+              </div>
+              <div class="flex justify-end gap-2 mt-4">
+                <button type="button" class="btn-secondary" (click)="showNewContactModal=false">Cancel</button>
+                <button type="submit" class="btn-primary">Save</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Subject -->
+        <div class="form-row">
+          <label class="form-label required">Subject <span class="required-star">*</span></label>
+          <input type="text" formControlName="subject" class="form-input" [class.error]="isFieldInvalid('subject')" placeholder="Enter Subject">
+          <div *ngIf="isFieldInvalid('subject')" class="error-message">Subject is required</div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-row">
+          <label class="form-label required">Description <span class="required-star">*</span></label>
+       
+          <textarea formControlName="description" class="form-textarea" [class.error]="isFieldInvalid('description')" rows="8" placeholder="Enter Description. Type / to open a list, and @mention can be used to notify an agent."></textarea>
+          <div *ngIf="isFieldInvalid('description')" class="error-message">Description is required</div>
+        </div>
+        <!-- Department Selection -->
+<div class="form-row">
+  <label class="form-label required">Department <span class="required-star">*</span></label>
+  <select formControlName="department" class="form-select" [class.error]="isFieldInvalid('department')">
+    <option value="">Select Department</option>
+    <option *ngFor="let dept of departments" [value]="dept">{{ dept }}</option>
+  </select>
+  <div *ngIf="isFieldInvalid('department')" class="error-message">
+    Department is required
+  </div>
+</div>
+
+<!-- Priority Dropdown -->
+<div class="form-row">
+  <label class="form-label required">Priority <span class="required-star">*</span></label>
+  <select formControlName="priority" class="form-select" [class.error]="isFieldInvalid('priority')">
+    <option value="">Select Priority</option>
+    <option value="High">High</option>
+    <option value="Medium">Medium</option>
+    <option value="Urgent">Urgent</option>
+    <option value="Low">Low</option>
+  </select>
+  <div *ngIf="isFieldInvalid('priority')" class="error-message">
+    Priority is required
+  </div>
+</div>
+
+
+        <!-- File Upload, Additional Fields, Form Actions -->
+        <!-- Keep your existing file upload and two-column form fields here -->
+        <!-- Form actions -->
+        <div class="form-actions">
+          <div class="action-buttons">
+            <button type="submit" class="btn btn-primary" [disabled]="ticketForm.invalid || isSubmitting">
+              <span *ngIf="isSubmitting" class="loading-spinner"></span>
+              Create
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

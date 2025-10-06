@@ -1,0 +1,67 @@
+<aside class="sidebar w-64 min-h-screen flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700" 
+       [class.collapsed]="isCollapsed">
+  <!-- Logo Section -->
+  <div class="logo-section">
+    <div class="logo-container">
+      <div class="logo-icon">
+        <svg class="w-5 h-5 text-purple-700" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <span class="logo-text text-gray-900 dark:text-white">Muraai Ticketing Desk</span>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="nav-menu">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+        <a [routerLink]="item.route" 
+           routerLinkActive="active"
+           class="nav-link"
+           [attr.aria-label]="item.label"
+           [attr.title]="item.label">
+          <svg class="nav-icon" 
+               fill="none" 
+               stroke="currentColor" 
+               viewBox="0 0 24 24"
+               aria-hidden="true">
+            <path stroke-linecap="round" 
+                  stroke-linejoin="round" 
+                  stroke-width="2" 
+                  [attr.d]="item.icon">
+            </path>
+          </svg>
+          <span class="nav-text">{{ item.label }}</span>
+          <span class="nav-tooltip">{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- User Profile Section -->
+  <div class="user-profile">
+    <div class="profile-container">
+      <div class="profile-avatar" 
+           [attr.aria-label]="'User avatar for Likitha'"
+           title="Likitha">
+        <span>LI</span>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name text-gray-900 dark:text-white">Likitha</div>
+        <div class="profile-role text-gray-600 dark:text-gray-400">Agent</div>
+      </div>
+      <button (click)="toggleSidebar()" 
+              class="collapse-button"
+              [attr.aria-label]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+              [attr.title]="isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" 
+                stroke-linejoin="round" 
+                stroke-width="2" 
+                [attr.d]="isCollapsed ? 'M9 5l7 7-7 7' : 'M15 19l-7-7 7-7'"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</aside>

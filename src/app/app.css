@@ -1,0 +1,38 @@
+/* Global app styles */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+  }
+  
+  .main-content {
+    margin-left: 0;
+  }
+}
+
+/* Mobile responsive utilities */
+@media (max-width: 640px) {
+  .ticket-layout {
+    flex-direction: column;
+  }
+  
+  .ticket-details {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 50;
+    background: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .ticket-details.open {
+    transform: translateX(0);
+  }
+}
