@@ -1,0 +1,1 @@
+import{Fa as o,Lb as s,hb as t}from"./chunk-HQDDE6HI.js";var i=class n{constructor(){}static \u0275fac=function(e){return new(e||n)};static \u0275cmp=o({type:n,selectors:[["app-settings"]],decls:2,vars:0,template:function(e,m){e&1&&(t(0," <"),t(1," <"))},dependencies:[s],encapsulation:2})};export{i as SettingsComponent};
